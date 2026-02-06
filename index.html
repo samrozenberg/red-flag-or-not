@@ -14,9 +14,19 @@
       background: #0b0b0f;
       color: #fff;
       min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 18px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 28px 16px;
+      gap: 18px;
+    }
+
+    /* ✅ LOGO OUTSIDE */
+    .logo {
+      width: 150px;
+      height: 150px;
+      object-fit: contain;
     }
 
     .card {
@@ -28,36 +38,16 @@
       box-shadow: 0 12px 36px rgba(0,0,0,0.40);
     }
 
-    /* Header with logo + title */
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-
-    .logo {
-      width: 80px;
-      height: 80px;
-      object-fit: contain;
-    }
-
     h1 {
-      margin: 0;
+      margin: 0 0 10px;
       text-align: center;
       font-size: clamp(22px, 4.5vw, 30px);
-      line-height: 1.1;
     }
 
     .pill-row {
       display: flex;
       justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin: 6px 0 10px;
-      opacity: 0.92;
+      margin: 8px 0 10px;
       font-size: 13px;
     }
 
@@ -77,7 +67,7 @@
       margin-bottom: 14px;
     }
 
-    /* Pink progress fill */
+    /* 💖 Pink progress */
     .bar > div {
       height: 100%;
       width: 0%;
@@ -87,7 +77,6 @@
 
     .question {
       background: rgba(0,0,0,0.25);
-      border: 1px solid rgba(255,255,255,0.14);
       border-radius: 14px;
       padding: 16px;
       display: grid;
@@ -96,7 +85,6 @@
 
     .qtext {
       font-size: clamp(18px, 4vw, 22px);
-      line-height: 1.35;
       text-align: center;
     }
 
@@ -107,23 +95,18 @@
     }
 
     button {
-      padding: 12px 14px;
+      padding: 12px;
       border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.16);
-      background: rgba(255,255,255,0.10);
-      color: #fff;
+      border: none;
+      background: #2a2a2a;
+      color: white;
       cursor: pointer;
       font-size: 16px;
-      transition: transform .06s ease, background .15s ease, border-color .15s ease;
-      width: 100%;
     }
 
     button:hover {
-      background: rgba(255,255,255,0.16);
-      border-color: rgba(255,255,255,0.28);
+      background: #3a3a3a;
     }
-
-    button:active { transform: translateY(1px); }
 
     .actions {
       display: flex;
@@ -131,96 +114,86 @@
       margin-top: 12px;
     }
 
-    .secondary { background: rgba(0,0,0,0.25); }
-
-    /* Result box: hidden until finish */
+    /* hidden until finish */
     .result {
       display: none;
       margin-top: 14px;
       padding: 16px;
       border-radius: 14px;
-      border: 1px dashed rgba(255,255,255,0.22);
-      background: rgba(0,0,0,0.20);
-      gap: 10px;
+      background: rgba(0,0,0,0.25);
+      text-align: center;
+      gap: 8px;
     }
 
     .big {
-      font-size: clamp(20px, 4.5vw, 24px);
-      font-weight: 800;
-      text-align: center;
-      line-height: 1.2;
+      font-size: 22px;
+      font-weight: bold;
     }
 
     .small {
-      opacity: 0.85;
-      text-align: center;
       font-size: 14px;
-      line-height: 1.4;
+      opacity: .8;
     }
 
     .list {
-      opacity: 0.92;
+      margin-top: 8px;
       font-size: 14px;
-      line-height: 1.5;
-      max-width: 520px;
-      margin: 0 auto;
-      white-space: pre-line;
       text-align: left;
-      word-break: break-word;
+      white-space: pre-line;
     }
 
-    /* Mobile tweaks */
+    /* 📱 Mobile */
     @media (max-width: 420px) {
-      body { padding: 14px; }
-      .card { padding: 14px; }
       .choices { grid-template-columns: 1fr; }
+      .logo { width: 100px; height: 100px; }
     }
   </style>
 </head>
 
 <body>
+
+  <!-- ✅ LOGO OUTSIDE -->
+  <img src="logo.png" class="logo" alt="Logo" />
+
   <div class="card">
-    <div class="header">
-      <!-- Put your image in the SAME folder as index.html and name it: logo.png -->
-      <img class="logo" src="logo.png" alt="Logo" />
-      <h1>Red Flag Detector 🚩</h1>
-    </div>
+
+    <h1>Red Flag Detector 🚩</h1>
 
     <div class="pill-row">
       <span class="pill" id="pillStep">Question: 1 / 5</span>
     </div>
 
-    <div class="bar" aria-label="progress">
+    <div class="bar">
       <div id="barFill"></div>
     </div>
 
     <div class="question">
-      <div class="qtext" id="questionText">...</div>
+      <div class="qtext" id="questionText"></div>
+
       <div class="choices" id="choices">
-        <button type="button" onclick="answer('oui')">Oui</button>
-        <button type="button" onclick="answer('non')">Non</button>
+        <button onclick="answer('oui')">Oui</button>
+        <button onclick="answer('non')">Non</button>
       </div>
     </div>
 
-    <div class="result" id="resultBox" aria-live="polite">
+    <div class="result" id="resultBox">
       <div class="big" id="verdict"></div>
       <div class="small" id="scoreLine"></div>
       <div class="list" id="badList"></div>
     </div>
 
     <div class="actions">
-      <button type="button" class="secondary" onclick="restart()">Restart ↩️</button>
+      <button onclick="restart()">Restart ↩️</button>
     </div>
+
   </div>
 
   <script>
-    // [questionText, badAnswer]
-    // Mixed so it's not only "oui" that is a red flag.
     const questions = [
       ["Tu pues des pieds ?", "oui"],
       ["Tu parles mal à tes parents ?", "oui"],
       ["Tu n'as même pas la classe à Dallas ?", "oui"],
-      ["Tu as 1000+ elos sur chess.com ?", "non"], // red if "non"
+      ["Tu as 1000+ elos sur chess.com ?", "non"],
       ["Tu es à l'Habonim Dror ?", "oui"]
     ];
 
@@ -232,7 +205,6 @@
     const pillStepEl = document.getElementById("pillStep");
     const barFillEl = document.getElementById("barFill");
     const choicesEl = document.getElementById("choices");
-
     const resultBoxEl = document.getElementById("resultBox");
     const verdictEl = document.getElementById("verdict");
     const scoreLineEl = document.getElementById("scoreLine");
@@ -241,12 +213,9 @@
     function updateUI() {
       const total = questions.length;
 
-      // Progress counter + bar
-      const step = Math.min(currentIndex + 1, total);
-      pillStepEl.textContent = `Question: ${step} / ${total}`;
-      barFillEl.style.width = `${(Math.min(currentIndex, total) / total) * 100}%`;
+      pillStepEl.textContent = `Question: ${Math.min(currentIndex + 1, total)} / ${total}`;
+      barFillEl.style.width = `${(currentIndex / total) * 100}%`;
 
-      // Question text
       if (currentIndex < total) {
         questionTextEl.textContent = questions[currentIndex][0];
       } else {
@@ -255,57 +224,32 @@
     }
 
     function answer(value) {
-      if (currentIndex >= questions.length) return;
-
-      const questionText = questions[currentIndex][0];
       const badAnswer = questions[currentIndex][1];
 
-      // Ruby logic translated: red_flags += 1 if user_answer == bad_answer
       if (value === badAnswer) {
-        redFlags += 1;
-        badSentences.push(questionText);
+        redFlags++;
+        badSentences.push(questions[currentIndex][0]);
       }
 
-      currentIndex += 1;
+      currentIndex++;
 
-      if (currentIndex >= questions.length) {
-        finish();
-      } else {
-        updateUI();
-      }
+      if (currentIndex >= questions.length) finish();
+      else updateUI();
     }
 
     function finish() {
-      // Hide Oui/Non buttons
       choicesEl.style.display = "none";
+      resultBoxEl.style.display = "grid";
       barFillEl.style.width = "100%";
 
-      // Show results box (was hidden)
-      resultBoxEl.style.display = "grid";
+      verdictEl.textContent =
+        redFlags >= 3 ? "🚩 YOU ARE A RED FLAG PERSON" : "✅ You are not a red flag";
 
-      // Verdict
-      verdictEl.textContent = (redFlags >= 3)
-        ? "🚩 YOU ARE A RED FLAG PERSON"
-        : "✅ You are not a red flag";
+      scoreLineEl.textContent =
+        redFlags === 1 ? "1 red flag detected" : redFlags + " red flags detected";
 
-      // Score line (proper plural)
-      if (redFlags === 0) {
-        scoreLineEl.textContent = "No red flags detected 🎉";
-      } else if (redFlags === 1) {
-        scoreLineEl.textContent = "1 red flag detected";
-      } else {
-        scoreLineEl.textContent = redFlags + " red flags detected";
-      }
-
-      // List red-flag sentences (remove '?' so it reads like a phrase)
-      if (badSentences.length > 0) {
-        const lines = badSentences.map(s => "🚩 " + s.replace(/\?/g, "").trim());
-        badListEl.textContent = lines.join("\n");
-      } else {
-        badListEl.textContent = "";
-      }
-
-      updateUI();
+      badListEl.textContent =
+        badSentences.map(q => "🚩 " + q.replace(/\?/g,"")).join("\n");
     }
 
     function restart() {
@@ -313,16 +257,10 @@
       redFlags = 0;
       badSentences = [];
 
-      // Show buttons again
       choicesEl.style.display = "grid";
-
-      // Hide results box until the end
       resultBoxEl.style.display = "none";
-      verdictEl.textContent = "";
-      scoreLineEl.textContent = "";
-      badListEl.textContent = "";
-
       barFillEl.style.width = "0%";
+
       updateUI();
     }
 
