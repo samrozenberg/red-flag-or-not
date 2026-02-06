@@ -28,10 +28,27 @@
       box-shadow: 0 12px 36px rgba(0,0,0,0.40);
     }
 
+    /* Header with logo + title */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      width: 46px;
+      height: 46px;
+      object-fit: contain;
+    }
+
     h1 {
-      margin: 0 0 10px;
+      margin: 0;
       text-align: center;
       font-size: clamp(22px, 4.5vw, 30px);
+      line-height: 1.1;
     }
 
     .pill-row {
@@ -157,13 +174,18 @@
       body { padding: 14px; }
       .card { padding: 14px; }
       .choices { grid-template-columns: 1fr; }
+      .logo { width: 42px; height: 42px; }
     }
   </style>
 </head>
 
 <body>
   <div class="card">
-    <h1>Red Flag Detector 🚩</h1>
+    <div class="header">
+      <!-- Put your image in the SAME folder as index.html and name it: logo.png -->
+      <img class="logo" src="logo.png" alt="Logo" />
+      <h1>Red Flag Detector 🚩</h1>
+    </div>
 
     <div class="pill-row">
       <span class="pill" id="pillStep">Question: 1 / 5</span>
@@ -200,7 +222,7 @@
       ["Tu parles mal à tes parents ?", "oui"],
       ["Tu n'as même pas la classe à Dallas ?", "oui"],
       ["Tu as 1000+ elos sur chess.com ?", "non"], // red if "non"
-      ["Tu es à l'Habonim Dror ?", "oui"]            // red if "non"
+      ["Tu es à l'Habonim Dror ?", "oui"]
     ];
 
     let currentIndex = 0;
@@ -263,7 +285,9 @@
       resultBoxEl.style.display = "grid";
 
       // Verdict
-      verdictEl.textContent = (redFlags >= 3) ? "🚩 YOU ARE A RED FLAG PERSON" : "✅ You are not a red flag";
+      verdictEl.textContent = (redFlags >= 3)
+        ? "🚩 YOU ARE A RED FLAG PERSON"
+        : "✅ You are not a red flag";
 
       // Score line (proper plural)
       if (redFlags === 0) {
